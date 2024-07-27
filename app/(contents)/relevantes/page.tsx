@@ -1,3 +1,4 @@
+import { PageContainer } from "@/components/page-container";
 import axios from "axios";
 import Link from "next/link";
 
@@ -6,7 +7,7 @@ export default async function Relevants() {
 		"https://tabnews.com.br/api/v1/contents",
 	);
 	return (
-		<main className="max-w-3xl p-8 mx-auto">
+		<PageContainer>
 			<ol className="list-decimal space-y-4">
 				{contents.map((content: Record<string, string>) => (
 					<li key={content.id} className="-space-y-1">
@@ -27,6 +28,6 @@ export default async function Relevants() {
 					</li>
 				))}
 			</ol>
-		</main>
+		</PageContainer>
 	);
 }
