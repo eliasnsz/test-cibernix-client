@@ -14,6 +14,8 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Checkbox } from "./ui/checkbox";
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 
 const formSchema = z.object({
 	email: z
@@ -31,17 +33,19 @@ const formSchema = z.object({
 });
 
 export default function AuthenticationForm() {
+	const searchParams = useSearchParams();
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			email: "",
+			email: searchParams.get("email") ?? "",
 			password: "",
 			rememberMe: false,
 		},
 	});
 
-	async function onSubmit() {
-		await new Promise((resolve) => setTimeout(resolve, 2000));
+	async function onSubmit(values: z.infer<typeof formSchema>) {
+		const { email, password, rememberMe } = values;
 	}
 
 	return (

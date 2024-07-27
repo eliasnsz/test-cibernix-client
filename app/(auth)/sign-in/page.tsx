@@ -1,3 +1,4 @@
+"use client";
 import AuthenticationForm from "@/components/authentication-form";
 import Link from "next/link";
 

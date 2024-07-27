@@ -13,7 +13,10 @@ import { Input } from "./ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderIcon } from "lucide-react";
-import { Checkbox } from "./ui/checkbox";
+import { api } from "@/lib/api/axios";
+import { AxiosError } from "axios";
+import { useToast } from "./ui/use-toast";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
 	username: z
@@ -31,6 +34,9 @@ const formSchema = z.object({
 });
 
 export default function CreateAccountForm() {
+	const router = useRouter();
+	const { toast } = useToast();
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -40,8 +46,40 @@ export default function CreateAccountForm() {
 		},
 	});
 
-	async function onSubmit() {
-		await new Promise((resolve) => setTimeout(resolve, 2000));
+	async function onSubmit(values: z.infer<typeof formSchema>) {
+		const { username, email, password } = values;
+
+		try {
+			await api.post("/users", { username, email, password });
+
+			toast({
+				title: "Conta criada com sucesso!",
+				description: "Vamos redirecionar você para a tela de login",
+			});
+
+			router.push(`/sign-in?email=${email}`);
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				switch (error.response?.status) {
+					case 400:
+					case 409:
+						toast({
+							title: "Erro ao criar conta",
+							description: error.response?.data.message,
+							variant: "destructive",
+						});
+						break;
+
+					default:
+						toast({
+							title: "Ocorreu um erro inesperado",
+							description: "Entre em contato com os desenvolvedores",
+							variant: "destructive",
+						});
+						break;
+				}
+			}
+		}
 	}
 
 	return (

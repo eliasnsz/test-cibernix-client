@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import "../styles/globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -14,7 +15,11 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="pt-BR">
-			<body className={GeistSans.className}>{children}</body>
+			<body className={GeistSans.className}>
+				{children}
+
+				<Toaster />
+			</body>
 		</html>
 	);
 }
