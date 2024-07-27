@@ -11,9 +11,9 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<div className="grid grid-cols-2 min-h-screen">
-			<div className="bg-accent-foreground">a</div>
-			<div>{children}</div>
+		<div className="grid grid-cols-2">
+			<div className="bg-accent-foreground max-h-[calc(100vh-56px)]">a</div>
+			<div className="">{children}</div>
 		</div>
 	);
 }

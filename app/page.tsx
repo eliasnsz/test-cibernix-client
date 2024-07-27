@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 export default function Home() {
-	return <main className="grid place-items-center min-h-screen">Home</main>;
+	return redirect("/relevantes");
 }
