@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "./ui/button";
 import MDEditor from "@uiw/react-md-editor";
+import rehypeSanitize from "rehype-sanitize";
 
 import {
 	Form,
@@ -63,6 +64,9 @@ export function PublishContentForm() {
 									<MDEditor
 										height={350}
 										data-color-mode="light"
+										previewOptions={{
+											rehypePlugins: [[rehypeSanitize]],
+										}}
 										value={field.value}
 										onChange={field.onChange}
 									/>

@@ -12,7 +12,7 @@ export default async function Relevants() {
 				{contents.map((content: Record<string, string>) => (
 					<li key={content.id} className="-space-y-1">
 						<Link
-							href="#"
+							href={`/${content.owner_username}/${content.slug}`}
 							className="font-medium hover:underline hover:text-muted-foreground line-clamp-1"
 						>
 							{content.title}
