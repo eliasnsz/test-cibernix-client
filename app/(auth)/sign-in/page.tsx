@@ -1,8 +1,14 @@
-"use client";
 import AuthenticationForm from "@/components/authentication-form";
-import Link from "next/link";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export default function SignIn() {
+	const isAuthenticated = cookies().has("token");
+
+	if (isAuthenticated) {
+		return redirect("/");
+	}
+
 	return (
 		<div className="grid min-h-screen place-items-center">
 			<div className="max-w-96">
@@ -14,18 +20,6 @@ export default function SignIn() {
 				</div>
 
 				<AuthenticationForm />
-
-				<div className="text-center space-y-3.5 mt-4">
-					<p className="text-sm text-muted-foreground">
-						Não tem uma conta?{" "}
-						<Link
-							href="/sign-up"
-							className="text-primary underline hover:text-black"
-						>
-							Cadastre-se
-						</Link>
-					</p>
-				</div>
 			</div>
 		</div>
 	);
