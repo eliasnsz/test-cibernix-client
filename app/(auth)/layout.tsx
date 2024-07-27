@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { GeistSans } from "geist/font/sans";
-import "../styles/globals.css";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -13,8 +11,9 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="pt-BR">
-			<body className={GeistSans.className}>{children}</body>
-		</html>
+		<div className="grid grid-cols-2 min-h-screen">
+			<div className="bg-accent-foreground">a</div>
+			<div>{children}</div>
+		</div>
 	);
 }
