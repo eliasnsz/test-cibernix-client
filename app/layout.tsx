@@ -1,18 +1,15 @@
-import type { Metadata } from "next";
-import { GeistSans } from "geist/font/sans";
-import "../styles/globals.css";
-import { Toaster } from "@/components/ui/toaster";
-import { MainNavbar } from "@/components/main-navbar";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import { Header } from "@/components/header";
+import { Toaster } from "@/components/ui/toaster";
+import { GeistSans } from "geist/font/sans";
+import type { Metadata } from "next";
+import "../styles/globals.css";
+
+import dayjs from "dayjs";
+import "dayjs/locale/pt-br";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.locale("pt-br");
+dayjs.extend(relativeTime);
 
 export const metadata: Metadata = {
 	title: "Create Next App",
