@@ -12,8 +12,8 @@ export default function RootLayout({
 }>) {
 	return (
 		<div className="grid grid-cols-2">
-			<div className="bg-accent-foreground">a</div>
-			<div className="h-screen pb-8">{children}</div>
+			<div className="bg-accent-foreground max-h-[calc(100vh-56px)]">a</div>
+			<div className="h-screen pb-8 max-h-[calc(100vh-56px)]">{children}</div>
 		</div>
 	);
 }

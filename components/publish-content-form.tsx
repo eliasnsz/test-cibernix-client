@@ -6,7 +6,7 @@ import { z } from "zod";
 import { Button } from "./ui/button";
 import MDEditor from "@uiw/react-md-editor";
 import rehypeSanitize from "rehype-sanitize";
-import cookies from "react-cookies";
+import cookies from "js-cookie";
 
 import {
 	Form,
@@ -46,7 +46,7 @@ export function PublishContentForm() {
 			const { data } = await api.post(
 				"/contents",
 				{ title, body },
-				{ headers: { Authorization: `Bearer ${cookies.load("token")}` } },
+				{ headers: { Authorization: `Bearer ${cookies.get("token")}` } },
 			);
 
 			toast({

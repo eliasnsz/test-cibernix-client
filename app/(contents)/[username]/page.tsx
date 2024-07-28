@@ -1,4 +1,4 @@
-import { getUserProfile } from "@/app/actions/users/get-user-profile";
+import { getUserProfile } from "@/app/actions/users/get-user";
 import { PageContainer } from "@/components/page-container";
 import { ProfileTabs } from "@/components/profile-tabs";
 import { notFound } from "next/navigation";

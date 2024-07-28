@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
-import cookies from "react-cookies";
+import cookies from "js-cookie";
 import {
 	Form,
 	FormControl,
@@ -61,7 +61,7 @@ export default function AuthenticationForm() {
 			});
 			const token = response.data.access_token;
 
-			cookies.save("token", token, {
+			cookies.set("token", token, {
 				expires: rememberMe
 					? new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30) // 30 days
 					: undefined, // Session
