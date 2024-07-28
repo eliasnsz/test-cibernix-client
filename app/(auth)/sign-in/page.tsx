@@ -6,7 +6,7 @@ export default function SignIn() {
 	const isAuthenticated = cookies().has("token");
 
 	if (isAuthenticated) {
-		return redirect("/");
+		return redirect("/relevantes");
 	}
 
 	return (

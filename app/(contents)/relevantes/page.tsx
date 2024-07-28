@@ -1,11 +1,10 @@
 import { PageContainer } from "@/components/page-container";
+import { api } from "@/lib/api/axios";
 import axios from "axios";
 import Link from "next/link";
 
 export default async function Relevants() {
-	const { data: contents } = await axios.get(
-		"https://tabnews.com.br/api/v1/contents",
-	);
+	const { data: contents } = await api.get("/contents");
 	return (
 		<PageContainer>
 			<ol className="list-decimal space-y-4">

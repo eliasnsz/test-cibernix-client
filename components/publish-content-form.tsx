@@ -6,6 +6,7 @@ import { z } from "zod";
 import { Button } from "./ui/button";
 import MDEditor from "@uiw/react-md-editor";
 import rehypeSanitize from "rehype-sanitize";
+import cookies from "react-cookies";
 
 import {
 	Form,
@@ -17,6 +18,11 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import Link from "next/link";
+import { api } from "@/lib/api/axios";
+import { AxiosError } from "axios";
+import { useToast } from "./ui/use-toast";
+import { LoaderIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Campo obrigatório" }),
@@ -24,6 +30,9 @@ const formSchema = z.object({
 });
 
 export function PublishContentForm() {
+	const { toast } = useToast();
+	const router = useRouter();
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -31,14 +40,37 @@ export function PublishContentForm() {
 			body: "",
 		},
 	});
+
+	async function onSubmit({ title, body }: z.infer<typeof formSchema>) {
+		try {
+			await api.post(
+				"/contents",
+				{ title, body },
+				{ headers: { Authorization: `Bearer ${cookies.load("token")}` } },
+			);
+
+			toast({
+				title: "Conteúdo publicado",
+				description: "Sua publicação já está visível para os outros usuários!",
+			});
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				toast({
+					title: "Erro ao publicar conteúdo",
+					description: error.response?.data.message,
+					variant: "destructive",
+				});
+
+				if (error.response?.status === 401) {
+					router.push("/sign-in");
+				}
+			}
+		}
+	}
+
 	return (
 		<Form {...form}>
-			<form
-				onSubmit={form.handleSubmit((a) => {
-					alert(JSON.stringify(a));
-				})}
-				className="space-y-6"
-			>
+			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 				<FormField
 					control={form.control}
 					name="title"
@@ -60,7 +92,7 @@ export function PublishContentForm() {
 						<FormItem>
 							<FormLabel>Conteúdo da publicação:</FormLabel>
 							<FormControl>
-								<div className="overflow-hidden border rounded-md">
+								<div className="focus-within:border-black overflow-hidden border border-input rounded-lg">
 									<MDEditor
 										height={350}
 										data-color-mode="light"
@@ -78,10 +110,16 @@ export function PublishContentForm() {
 				/>
 
 				<div className="flex justify-end gap-2">
-					<Button variant="ghost">
+					<Button disabled={form.formState.isSubmitting} variant="ghost">
 						<Link href="..">Cancelar</Link>
 					</Button>
-					<Button type="submit">Submit</Button>
+					<Button disabled={form.formState.isSubmitting} type="submit">
+						{form.formState.isSubmitting ? (
+							<LoaderIcon className="size-4 animate-spin" />
+						) : (
+							"Publicar"
+						)}
+					</Button>
 				</div>
 			</form>
 		</Form>

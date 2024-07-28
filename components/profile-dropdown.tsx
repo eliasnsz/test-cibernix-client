@@ -5,7 +5,6 @@ import {
 	PlusIcon,
 	User2Icon,
 } from "lucide-react";
-import { Button } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import Link, { type LinkProps } from "next/link";
 import type { ElementType } from "react";
@@ -15,17 +14,17 @@ export function ProfileDropdown() {
 	return (
 		<Popover>
 			<PopoverTrigger>
-				<Button variant="outline" className="w-8 h-8" size="icon">
+				<div className="border p-1.5 rounded border-border hover:bg-muted">
 					<Menu className="w-5 h-5" />
-				</Button>
+				</div>
 			</PopoverTrigger>
 
 			<PopoverContent className="max-w-48 mr-6 p-2">
-				<PopoverButton href="#" icon={User2Icon} text="eliasnsz" />
+				<PopoverButton href="/eliasnsz" icon={User2Icon} text="eliasnsz" />
 
 				<hr className="my-0.5" />
 
-				<PopoverButton href="#" icon={PlusIcon} text="Novo conteúdo" />
+				<PopoverButton href="/publicar" icon={PlusIcon} text="Novo conteúdo" />
 				<PopoverButton href="#" icon={NotebookPen} text="Meus conteúdos" />
 
 				<hr className="my-0.5" />

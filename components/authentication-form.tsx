@@ -20,6 +20,7 @@ import {
 import { Input } from "./ui/input";
 import { useToast } from "./ui/use-toast";
 import Link from "next/link";
+import Router from "next/router";
 
 const formSchema = z.object({
 	email: z
@@ -71,7 +72,7 @@ export default function AuthenticationForm() {
 				description: "O login foi efetuado. Seja bem-vindo!",
 			});
 
-			router.push("/");
+			window.location.href = "/relevantes";
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				toast({
