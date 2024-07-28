@@ -72,7 +72,7 @@ export default function AuthenticationForm() {
 				description: "O login foi efetuado. Seja bem-vindo!",
 			});
 
-			window.location.href = "/relevantes";
+			window.location.href = "/";
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				toast({

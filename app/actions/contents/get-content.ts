@@ -1,6 +1,6 @@
 import { api } from "@/lib/api/axios";
 
-type Content = {
+export type Content = {
 	id: string;
 	slug: string;
 	title: string;

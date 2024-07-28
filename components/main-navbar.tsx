@@ -8,10 +8,10 @@ export function MainNavbar() {
 	return (
 		<div className="text-sm font-semibold space-x-4">
 			<Link
-				href="/relevantes"
+				href="/"
 				className={` transition-colors
 					${
-						pathname === "/relevantes"
+						pathname === "/" || pathname.startsWith("/pagina")
 							? "border-b text-primary pb-0.5 border-muted-foreground"
 							: "text-muted-foreground"
 					}`}
@@ -22,7 +22,7 @@ export function MainNavbar() {
 				href="/recentes"
 				className={` transition-colors
 					${
-						pathname === "/recentes"
+						pathname.startsWith("/recentes")
 							? "border-b text-primary pb-0.5 border-muted-foreground"
 							: "text-muted-foreground"
 					}`}

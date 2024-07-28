@@ -2,7 +2,7 @@ import { fetchRecentContents } from "@/app/actions/contents/fetch-recent-content
 import ContentList from "@/components/content-list";
 import { PageContainer } from "@/components/page-container";
 
-export default async function Recents() {
+export default async function Relevants() {
 	const { contents, pagination } = await fetchRecentContents();
 
 	return (
@@ -10,7 +10,7 @@ export default async function Recents() {
 			<ContentList
 				contents={contents}
 				pagination={pagination}
-				paginationBasePath="/recentes/pagina"
+				paginationBasePath="/pagina"
 			/>
 		</PageContainer>
 	);

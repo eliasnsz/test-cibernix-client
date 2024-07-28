@@ -1,9 +1,22 @@
 import { fetchRecentContents } from "@/app/actions/contents/fetch-recent-contents";
 import ContentList from "@/components/content-list";
 import { PageContainer } from "@/components/page-container";
+import { notFound } from "next/navigation";
 
-export default async function Recents() {
-	const { contents, pagination } = await fetchRecentContents();
+interface Params {
+	page: string;
+}
+
+export default async function RecentsPage({ params }: { params: Params }) {
+	const page = Number.parseInt(params.page);
+
+	if (page < 0 || Number.isNaN(page)) {
+		return notFound();
+	}
+
+	const { contents, pagination } = await fetchRecentContents({
+		page: page,
+	});
 
 	return (
 		<PageContainer>
