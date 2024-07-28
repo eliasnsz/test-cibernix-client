@@ -6,13 +6,13 @@ import dayjs from "dayjs";
 import Link from "next/link";
 
 interface Params {
-	user: string;
+	username: string;
 	slug: string;
 }
 
 export default async function Content({ params }: { params: Params }) {
-	const { user, slug } = params;
-	const { content } = await getContent({ user, slug });
+	const { username, slug } = params;
+	const { content } = await getContent({ username, slug });
 
 	return (
 		<PageContainer className="border-l space-y-6">

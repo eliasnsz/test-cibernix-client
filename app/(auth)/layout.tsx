@@ -13,7 +13,7 @@ export default function RootLayout({
 	return (
 		<div className="grid grid-cols-2">
 			<div className="bg-accent-foreground max-h-[calc(100vh-56px)]">a</div>
-			<div className="">{children}</div>
+			<div className="max-h-[calc(100vh-56px)] h-screen pb-8">{children}</div>
 		</div>
 	);
 }

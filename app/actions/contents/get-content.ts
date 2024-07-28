@@ -14,7 +14,7 @@ export type Content = {
 };
 
 interface GetContentRequest {
-	user: string;
+	username: string;
 	slug: string;
 }
 
@@ -23,10 +23,10 @@ interface GetContentResponse {
 }
 
 export async function getContent({
-	user,
+	username,
 	slug,
 }: GetContentRequest): Promise<GetContentResponse> {
-	const endpoint = `/contents/${user}/${slug}`;
+	const endpoint = `/contents/${username}/${slug}`;
 
 	const { data: content } = await api.get(endpoint);
 

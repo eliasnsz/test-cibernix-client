@@ -10,7 +10,7 @@ export default function SignUp() {
 	}
 
 	return (
-		<div className="grid min-h-screen place-items-center">
+		<div className="grid h-full place-items-center">
 			<div className="max-w-96">
 				<div className="space-y-2 mb-6 text-center">
 					<h1 className="text-2xl font-semibold">Criar uma nova conta</h1>
