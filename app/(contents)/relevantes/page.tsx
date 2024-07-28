@@ -7,7 +7,7 @@ export default async function Relevants() {
 	const { data: contents } = await api.get("/contents");
 	return (
 		<PageContainer>
-			<ol className="list-decimal space-y-4">
+			<ol className="list-decimal space-y-2">
 				{contents.map((content: Record<string, string>) => (
 					<li key={content.id} className="-space-y-1">
 						<Link

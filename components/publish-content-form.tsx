@@ -43,7 +43,7 @@ export function PublishContentForm() {
 
 	async function onSubmit({ title, body }: z.infer<typeof formSchema>) {
 		try {
-			await api.post(
+			const { data } = await api.post(
 				"/contents",
 				{ title, body },
 				{ headers: { Authorization: `Bearer ${cookies.load("token")}` } },
@@ -53,6 +53,8 @@ export function PublishContentForm() {
 				title: "Conteúdo publicado",
 				description: "Sua publicação já está visível para os outros usuários!",
 			});
+
+			router.push(data.redirect_path);
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				toast({
