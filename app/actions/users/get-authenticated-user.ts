@@ -1,6 +1,7 @@
+"use server";
+import { cookies } from "next/headers";
 import { bad, Fail, nice } from "@/errors/bad-nice";
 import { api } from "@/lib/api/axios";
-import { cookies } from "next/headers";
 import type { UserProfile } from "./get-user";
 
 export async function getAuthenticatedUser() {

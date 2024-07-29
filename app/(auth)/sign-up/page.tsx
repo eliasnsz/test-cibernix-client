@@ -1,11 +1,11 @@
+import { getAuthenticatedUser } from "@/app/actions/users/get-authenticated-user";
 import CreateAccountForm from "@/components/create-account-form";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default function SignUp() {
-	const isAuthenticated = cookies().has("token");
+export default async function SignUp() {
+	const [error, response] = await getAuthenticatedUser();
 
-	if (isAuthenticated) {
+	if (response?.user) {
 		return redirect("/");
 	}
 

@@ -1,11 +1,11 @@
+import { getAuthenticatedUser } from "@/app/actions/users/get-authenticated-user";
 import AuthenticationForm from "@/components/authentication-form";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default function SignIn() {
-	const isAuthenticated = cookies().has("token");
+export default async function SignIn() {
+	const [error, response] = await getAuthenticatedUser();
 
-	if (isAuthenticated) {
+	if (response?.user) {
 		return redirect("/");
 	}
 

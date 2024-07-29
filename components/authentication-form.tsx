@@ -1,14 +1,14 @@
 "use client";
-import { api } from "@/lib/api/axios";
+import { signIn } from "@/app/actions/auth/sign-in";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
+import cookies from "js-cookie";
 import { LoaderIcon } from "lucide-react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
-import cookies from "js-cookie";
 import {
 	Form,
 	FormControl,
@@ -19,8 +19,6 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { useToast } from "./ui/use-toast";
-import Link from "next/link";
-import Router from "next/router";
 
 const formSchema = z.object({
 	email: z
@@ -54,33 +52,30 @@ export default function AuthenticationForm() {
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		const { email, password, rememberMe } = values;
 
-		try {
-			const response = await api.post("/sessions", {
-				email,
-				password,
-			});
-			const token = response.data.access_token;
+		const [error, result] = await signIn({ email, password, rememberMe });
 
-			cookies.set("token", token, {
-				expires: rememberMe
-					? new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30) // 30 days
-					: undefined, // Session
-			});
+		if (error) {
+			switch (error.code) {
+				case "BAD_REQUEST":
+					return toast({
+						title: "Erro ao fazer login",
+						description: error.payload.message,
+					});
 
-			toast({
-				title: "Sucesso!",
-				description: "O login foi efetuado. Seja bem-vindo!",
-			});
-
-			router.refresh();
-		} catch (error) {
-			if (error instanceof AxiosError) {
-				toast({
-					title: "Erro ao fazer login",
-					description: error.response?.data.message,
-				});
+				case "INTERNAL_SERVER_ERROR":
+					return toast({
+						title: "Erro ao fazer login",
+						description: error.payload.message,
+					});
 			}
 		}
+
+		toast({
+			title: "Sucesso!",
+			description: "O login foi efetuado. Seja bem-vindo!",
+		});
+
+		router.refresh();
 	}
 
 	return (

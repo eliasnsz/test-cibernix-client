@@ -31,7 +31,7 @@ export default async function ContentList({
 					<li key={content.id} className="-space-y-1">
 						<Link
 							href={`/${content.owner_username}/${content.slug}`}
-							className="font-medium hover:underline hover:text-muted-foreground line-clamp-1"
+							className="font-medium visited:text-muted-foreground hover:underline hover:text-muted-foreground line-clamp-1"
 						>
 							{content.title}
 						</Link>

@@ -1,13 +1,17 @@
+import { getAuthenticatedUser } from "@/app/actions/users/get-authenticated-user";
 import { PageContainer } from "@/components/page-container";
 import { PublishContentForm } from "@/components/publish-content-form";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default function Publicar() {
-	const isAuthenticated = cookies().has("token");
+export default async function Publicar() {
+	const [error, response] = await getAuthenticatedUser();
 
-	if (!isAuthenticated) {
-		return redirect("/sign-in");
+	if (error) {
+		switch (error.code) {
+			case "UNAUTHENTICATED":
+			case "INTERNAL_SERVER_ERROR":
+				return redirect("/sign-in");
+		}
 	}
 
 	return (

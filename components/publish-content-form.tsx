@@ -23,6 +23,7 @@ import { AxiosError } from "axios";
 import { useToast } from "./ui/use-toast";
 import { LoaderIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Campo obrigatório" }),
@@ -55,6 +56,7 @@ export function PublishContentForm() {
 			});
 
 			router.push(data.redirect_path);
+			revalidatePath("/");
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				toast({
