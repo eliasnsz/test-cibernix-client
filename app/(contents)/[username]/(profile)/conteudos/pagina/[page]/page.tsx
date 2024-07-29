@@ -34,7 +34,7 @@ export default async function UserContentsPagination({ params }: Params) {
 				</Link>
 			</TabsList>
 			<TabsContent value="contents">
-				<PageContainer>
+				<PageContainer className="py-2">
 					<ContentList
 						contents={contents}
 						pagination={pagination}

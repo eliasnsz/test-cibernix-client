@@ -24,6 +24,7 @@ import { useToast } from "./ui/use-toast";
 import { LoaderIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { MarkdownEditor } from "./markdown-editor";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Campo obrigatório" }),
@@ -96,17 +97,7 @@ export function PublishContentForm() {
 						<FormItem>
 							<FormLabel>Conteúdo da publicação:</FormLabel>
 							<FormControl>
-								<div className="focus-within:border-black overflow-hidden border border-input rounded-lg">
-									<MDEditor
-										height={350}
-										data-color-mode="light"
-										previewOptions={{
-											rehypePlugins: [[rehypeSanitize]],
-										}}
-										value={field.value}
-										onChange={field.onChange}
-									/>
-								</div>
+								<MarkdownEditor value={field.value} onChange={field.onChange} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>

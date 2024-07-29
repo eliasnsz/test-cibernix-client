@@ -1,6 +1,7 @@
 import { bad, Fail, nice } from "@/errors/bad-nice";
 import { api } from "@/lib/api/axios";
 import { AxiosError } from "axios";
+import cookies from "js-cookie";
 
 export type UserProfile = {
 	id: string;
@@ -12,15 +13,24 @@ export type UserProfile = {
 };
 
 interface GetUserProfileRequest {
-	username: string;
+	description?: string;
 }
 
-export async function getUserProfile({ username }: GetUserProfileRequest) {
-	const endpoint = `/users/${username}`;
+export async function updateUser({ description }: GetUserProfileRequest) {
+	const token = cookies.get("token");
+	const endpoint = "/user";
 
 	try {
-		const { data: profile } = await api.get<UserProfile>(endpoint);
-		return nice({ profile });
+		await api.put(
+			endpoint,
+			{ description },
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
+		return nice();
 	} catch (error) {
 		if (error instanceof AxiosError) {
 			if (error.response?.status === 404) {
