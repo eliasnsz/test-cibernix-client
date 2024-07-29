@@ -2,6 +2,7 @@ import { fetchContentsByUsername } from "@/app/actions/contents/fetch-contents-b
 import ContentList from "@/components/content-list";
 import { PageContainer } from "@/components/page-container";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FolderSearchIcon } from "lucide-react";
 import Link from "next/link";
 
 interface Params {
@@ -36,6 +37,9 @@ export default async function UserContents({ params }: Params) {
 						contents={contents}
 						pagination={pagination}
 						paginationBasePath={`/${username}/conteudos/pagina`}
+						emptyStateIcon={FolderSearchIcon}
+						emptyStateTitle="Nenhuma publicação encontrada"
+						emptyStateSubtitle={`${username} ainda não fez nenhuma publicação`}
 					/>
 				</PageContainer>
 			</TabsContent>
