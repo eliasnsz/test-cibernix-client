@@ -22,45 +22,61 @@ import { api } from "@/lib/api/axios";
 import { AxiosError } from "axios";
 import { useToast } from "./ui/use-toast";
 import { LoaderIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import type { Content as ContentProps } from "@/app/actions/contents/get-content";
+import type { Dispatch, SetStateAction } from "react";
+
+interface Props {
+	content: ContentProps;
+	setMode: Dispatch<SetStateAction<"view" | "edit">>;
+}
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Campo obrigatório" }),
 	body: z.string().min(1, { message: "Campo obrigatório" }),
 });
 
-export function PublishContentForm() {
+export function EditContentForm({ content, setMode }: Props) {
+	const pathname = usePathname();
 	const { toast } = useToast();
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: "",
-			body: "",
+			title: content.title,
+			body: content.body,
 		},
 	});
 
 	async function onSubmit({ title, body }: z.infer<typeof formSchema>) {
 		try {
-			const { data } = await api.post(
-				"/contents",
-				{ title, body },
+			const { data } = await api.put(
+				`/contents/${content.owner_username}/${content.slug}`,
+				{ title, body, contentId: content.id },
 				{ headers: { Authorization: `Bearer ${cookies.get("token")}` } },
 			);
 
 			toast({
-				title: "Conteúdo publicado",
-				description: "Sua publicação já está visível para os outros usuários!",
+				title: "Conteúdo atualizado",
+				description:
+					"Sua publicação foi atualizada e está visível para os outros usuários!",
 			});
 
-			router.push(data.redirect_path);
+			if (data.redirect_path !== pathname) {
+				router.push(data.redirect_path);
+			} else {
+				setMode("view");
+				router.refresh();
+			}
 			revalidatePath("/");
+			revalidatePath(`${content.owner_username}/${content.slug}`);
+			revalidatePath(data.redirect_path);
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				toast({
-					title: "Erro ao publicar conteúdo",
+					title: "Erro ao atualizar conteúdo",
 					description: error.response?.data.message,
 					variant: "destructive",
 				});
@@ -118,10 +134,14 @@ export function PublishContentForm() {
 						disabled={form.formState.isSubmitting}
 						type="button"
 						variant="ghost"
+						onClick={() => setMode("view")}
 					>
-						<Link href="..">Cancelar</Link>
+						Cancelar
 					</Button>
-					<Button disabled={form.formState.isSubmitting} type="submit">
+					<Button
+						disabled={form.formState.isSubmitting || !form.formState.isDirty}
+						type="submit"
+					>
 						{form.formState.isSubmitting ? (
 							<LoaderIcon className="size-4 animate-spin" />
 						) : (

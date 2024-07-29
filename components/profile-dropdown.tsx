@@ -32,7 +32,7 @@ export async function ProfileDropdown() {
 
 				<PopoverButton href="/publicar" icon={PlusIcon} text="Novo conteúdo" />
 				<PopoverButton
-					href={`/${response.user.username}?tab=contents`}
+					href={`/${response.user.username}/conteudos`}
 					icon={NotebookPen}
 					text="Meus conteúdos"
 				/>

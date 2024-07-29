@@ -1,41 +1,41 @@
 import { getContent } from "@/app/actions/contents/get-content";
-import MarkdownViewer from "@/components/markdown-viewer";
+import { getAuthenticatedUser } from "@/app/actions/users/get-authenticated-user";
+import { Content } from "@/components/content";
 import { PageContainer } from "@/components/page-container";
-import { Badge } from "@/components/ui/badge";
-import dayjs from "dayjs";
-import Link from "next/link";
+import { notFound } from "next/navigation";
 
 interface Params {
 	username: string;
 	slug: string;
 }
 
-export default async function Content({ params }: { params: Params }) {
+export default async function ContentPage({ params }: { params: Params }) {
+	const [_, getAuthenticatedUserResponse] = await getAuthenticatedUser();
+
 	const { username, slug } = params;
-	const { content } = await getContent({ username, slug });
+	const [error, getContentResponse] = await getContent({ username, slug });
+
+	if (error) {
+		switch (error.code) {
+			case "RESOURCE_NOT_FOUND":
+			case "INTERNAL_SERVER_ERROR":
+				return notFound();
+		}
+	}
+
+	const isContentOwner = !!(
+		getAuthenticatedUserResponse?.user &&
+		getAuthenticatedUserResponse.user.id ===
+			getContentResponse.content.author_id
+	);
 
 	return (
-		<PageContainer className="border-l space-y-6">
-			<div className="space-y-2">
-				<div>
-					<Link href={`/${content.owner_username}`}>
-						<Badge
-							variant="outline"
-							className="text-violet-800 font-medium hover:underline bg-violet-100"
-						>
-							{content.owner_username}
-						</Badge>
-					</Link>
-					<span className="text-xs text-muted-foreground">
-						{" "}
-						— {dayjs(content.published_at).fromNow()}
-					</span>
-				</div>
-
-				<h1 className="text-3xl font-bold">{content.title}</h1>
-			</div>
-
-			<MarkdownViewer value={content.body} />
+		<PageContainer className="border-l space-y-2">
+			<Content
+				mode="view"
+				content={getContentResponse.content}
+				isContentOwner={isContentOwner}
+			/>
 		</PageContainer>
 	);
 }

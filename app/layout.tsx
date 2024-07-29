@@ -3,13 +3,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import "../styles/globals.css";
+import moment from "moment";
+import "moment/locale/pt-br";
 
-import dayjs from "dayjs";
-import "dayjs/locale/pt-br";
-import relativeTime from "dayjs/plugin/relativeTime";
-
-dayjs.locale("pt-br");
-dayjs.extend(relativeTime);
+moment.locale("pt-br");
 
 export const metadata: Metadata = {
 	title: "Create Next App",

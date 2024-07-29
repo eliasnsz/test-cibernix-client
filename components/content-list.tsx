@@ -1,10 +1,10 @@
 import type { PaginationProps } from "@/app/actions/contents/fetch-recent-contents";
 import type { Content } from "@/app/actions/contents/get-content";
-import dayjs from "dayjs";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { ElementType } from "react";
 import { ContentsPagination } from "./contents-pagination";
+import moment from "moment";
 
 interface ContentListProps {
 	pagination: PaginationProps;
@@ -49,7 +49,7 @@ export default async function ContentList({
 								>
 									{content.owner_username}
 								</Link>{" "}
-								— 0 comentários — {dayjs(content.published_at).fromNow()}
+								— 0 comentários — {moment(content.published_at).fromNow()}
 							</span>
 						</div>
 					</li>

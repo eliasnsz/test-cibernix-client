@@ -1,4 +1,6 @@
+import { bad, Fail, nice } from "@/errors/bad-nice";
 import { api } from "@/lib/api/axios";
+import { AxiosError } from "axios";
 
 export type Content = {
 	id: string;
@@ -18,17 +20,29 @@ interface GetContentRequest {
 	slug: string;
 }
 
-interface GetContentResponse {
-	content: Content;
-}
-
-export async function getContent({
-	username,
-	slug,
-}: GetContentRequest): Promise<GetContentResponse> {
+export async function getContent({ username, slug }: GetContentRequest) {
 	const endpoint = `/contents/${username}/${slug}`;
 
-	const { data: content } = await api.get(endpoint);
+	try {
+		const { data: content } = await api.get<Content>(endpoint);
 
-	return { content };
+		return nice({ content });
+	} catch (error) {
+		if (error instanceof AxiosError) {
+			switch (error.response?.status) {
+				case 404:
+					return bad(
+						Fail.create("RESOURCE_NOT_FOUND", {
+							message: error.response.data.message,
+						}),
+					);
+			}
+		}
+
+		return bad(
+			Fail.create("INTERNAL_SERVER_ERROR", {
+				message: "Ocorreu um erro inesperado.",
+			}),
+		);
+	}
 }
