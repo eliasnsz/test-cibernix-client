@@ -1,24 +1,24 @@
 "use client";
+import { deleteContent } from "@/app/actions/contents/delete-content";
 import type { Content as ContentProps } from "@/app/actions/contents/get-content";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { EditIcon, TrashIcon } from "lucide-react";
 import moment from "moment";
 import "moment/locale/pt-br";
+import { revalidatePath } from "next/cache";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import MarkdownViewer from "./markdown-viewer";
-import { PublishContentForm } from "./publish-content-form";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
 import { EditContentForm } from "./edit-content-form";
+import MarkdownViewer from "./markdown-viewer";
+import { Badge } from "./ui/badge";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { EditIcon, TrashIcon } from "lucide-react";
+import { useToast } from "./ui/use-toast";
 
 moment.locale("pt-br");
 
@@ -33,7 +33,37 @@ export function Content({
 	content,
 	isContentOwner,
 }: Props) {
+	const { toast } = useToast();
+	const router = useRouter();
+	const pathname = usePathname();
 	const [mode, setMode] = useState<"view" | "edit">("view");
+
+	async function handleDelete() {
+		const [error] = await deleteContent({
+			contentId: content.id,
+			username: content.owner_username,
+		});
+
+		if (error) {
+			switch (error.code) {
+				case "NOT_ALLOWED":
+				case "RESOURCE_NOT_FOUND":
+				case "INTERNAL_SERVER_ERROR":
+					return toast({
+						title: "Ocorreu um erro",
+						description: error.payload.message,
+						variant: "destructive",
+					});
+			}
+		}
+
+		toast({
+			title: "Conteúdo removido",
+			description: "A publicação foi removida com sucesso.",
+		});
+
+		router.refresh();
+	}
 
 	if (mode === "view") {
 		return (
@@ -67,7 +97,10 @@ export function Content({
 										<EditIcon className="size-4 mr-2" />
 										<span>Editar</span>
 									</DropdownMenuItem>
-									<DropdownMenuItem className="cursor-pointer">
+									<DropdownMenuItem
+										onClick={handleDelete}
+										className="cursor-pointer"
+									>
 										<TrashIcon className="size-4 mr-2 text-red-500" />
 										<span className="text-red-500">Deletar</span>
 									</DropdownMenuItem>
