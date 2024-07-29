@@ -145,7 +145,7 @@ export function EditContentForm({ content, setMode }: Props) {
 						{form.formState.isSubmitting ? (
 							<LoaderIcon className="size-4 animate-spin" />
 						) : (
-							"Publicar"
+							"Salvar"
 						)}
 					</Button>
 				</div>

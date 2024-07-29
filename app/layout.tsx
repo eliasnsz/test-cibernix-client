@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 import moment from "moment";
 import "moment/locale/pt-br";
+import { Footer } from "@/components/footer";
 
 moment.locale("pt-br");
 
@@ -25,6 +26,7 @@ export default function RootLayout({
 				{children}
 
 				<Toaster />
+				<Footer />
 			</body>
 		</html>
 	);
