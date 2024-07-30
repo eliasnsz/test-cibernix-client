@@ -11,6 +11,8 @@
 
 Este repositório contém o código front-end do teste técnico da Cibernix Tecnologias. O projeto consiste em um blog onde é possivel criar publicações a partir de um editor em markdown. [Clique para conferir o projeto ao vivo](https://test-cibernix-client.vercel.app/)
 
+_Obs.: é provável que, na primeira tentativa de acessar o projeto, a Vercel retorne um erro de Timeout. Isso ocorre porque o backend está hospedado no plano gratuito do [Render](https://render.com) que, após um tempo de inatividade, desliga o servidor. Portanto, ao receber o erro basta aguardar alguns segundos e atualizar a página._
+
 ## Tecnologias
 
 - ReactJS
