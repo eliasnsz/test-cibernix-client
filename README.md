@@ -1,11 +1,8 @@
 ## Índice
 
 - [Introdução](#introdução)
-- [Instalação](#instalação)
 - [Tecnologias](#tecnologias)
-- [Uso](#uso)
-- [Contribuição](#contribuição)
-- [Licença](#licença)
+- [Instalação](#instalação)
 
 ## Introdução
 
